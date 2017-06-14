@@ -1,0 +1,20 @@
+{
+	"name": "sound",
+	"authors": [
+		"Jonas Minnberg"
+	],
+	"description": "",
+	"copyright": "Copyright © 2017, Jonas Minnberg",
+	"license": "MIT",
+	"hompage" : "https://github.com/sasq64/dbbs",
+
+	"lflags": ["-Llibs"],
+	"libs": [ "portaudio" ],
+	"dependencies": {
+		"portaudio": "~>1.0.2",
+		"sqlite3": {
+			"path": "../sqlite3-d"
+		}
+
+	}
+}
