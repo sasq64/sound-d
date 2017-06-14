@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.4)
 project(musicplayer.openmptplugin)
 
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11")
 
 file(GLOB SOUNDLIB_FILES soundlib/*.cpp)
 file(GLOB MPT_FILES common/mpt*.cpp)
