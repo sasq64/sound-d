@@ -1,7 +1,10 @@
-
+import std.array;
+import std.string;
+import std.algorithm : map;
 import std.process;
 import std.stdio;
 import std.file;
+import std.conv;
 
 struct AnsiParser
 {
@@ -158,7 +161,7 @@ unittest {
     import std.c.stdio;
 	writeln("HEY");
 
-	auto pipes = pipeProcess("/usr/local/bin/angband", Redirect.stdout | Redirect.stdin | Redirect.stderr);
+	auto pipes = pipeProcess(["/usr/games/angband", "-mgcu"], Redirect.stdout | Redirect.stdin | Redirect.stderr);
 
     //setRaw(pipes.stdin);
     setvbuf(pipes.stdin.getFP(), null, _IONBF, 0U);
@@ -175,6 +178,10 @@ unittest {
 
     AnsiParser parser;
 
+    void handleSeq(char pref, char cmd, int[] args)
+    {
+    }
+
     while (true)
     {
         auto rc = fread(b.ptr, 1, b.length, pipes.stdout.getFP());
@@ -188,8 +195,22 @@ unittest {
                 auto t = seq.data;
                 if(seq.isText)
                     writeln(seq.text);
-                else 
-                    writeln("ANSI:" ~  cast(string)seq.data[1..$]);
+                else {
+                    string a = cast(string)seq.data[1..$];
+                    if(a[0] == '[') {
+                        int s = 1;
+                        char pref = 0;
+                        if(a[s] == '?') {
+                            pref = a[s];
+                            s = 2;
+                        }
+                        char cmd = a[$-1];
+                        //writeln(a[1..$-1]);
+                        auto x = array(a[s..$-1].splitter(";").map!(to!int));
+                        handleSeq(pref, cmd, x);
+                    } else
+                        writeln("ANSI:" ~  cast(string)seq.data[1..$]);
+                }
                //for (int i = 0; i < t.length; i++)
                  //   writefln("%02x '%c'", t[i], t[i] >= 0x20 && t[i] < 0x7f ? cast(char) t[i] : '#');
             }
