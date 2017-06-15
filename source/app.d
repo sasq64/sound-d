@@ -143,7 +143,7 @@ void main(string[] args)
 		return;
 
 	//auto plugin = DynLoad!Plugin("openmptplugin/build/libopenmptplugin.dylib");
-	auto plugin = DynLoad!Plugin("viceplugin/build/libviceplugin.dylib");
+	auto plugin = DynLoad!Plugin("viceplugin/build/libviceplugin.so");
 
 	if(plugin.init)
 		plugin.init();
